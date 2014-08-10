@@ -171,7 +171,7 @@ class Report(object):
                     if uname.isalnum() and uname not in ["END", "Updated"]:
                         users += 1
             count.append(users)
-            return sum(count)
+        return sum(count)
 
     @property
     def uptime(self):
@@ -213,11 +213,11 @@ class Report(object):
 
 
 def main():
-    report = Report()
+    report = dict(Report())
     
     verbose = "-v" in sys.argv
     if verbose:
-        common.debug("SENT: " + str(dict(report)))
+        common.debug("SENT: " + str(report))
 
     response = send_heartbeat(report)
 
@@ -227,7 +227,7 @@ def main():
 
     if error:
         if not verbose:
-            common.debug("SENT: " + str(dict(report)), error=True)
+            common.debug("SENT: " + str(report), error=True)
         common.debug("ERROR: " + str(response), error=True)
 
 if __name__ == "__main__":
