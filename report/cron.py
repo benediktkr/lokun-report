@@ -125,7 +125,7 @@ def send_heartbeat(data):
             json = requests.post(url, data, timeout=4.20,
                                 verify=config.verifyssl).json()
             return json
-        except requests.ConnectionError as c:
+        except (requests.ConnectionError, requests.Timeout) as c:
             common.debug("Retrying API in 30 secs: " + str(c), error=True)
             time.sleep(30)
     else:
