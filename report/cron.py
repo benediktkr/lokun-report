@@ -133,6 +133,10 @@ def send_heartbeat(data):
         sys.exit(1)
 
 class Report(object):
+
+    def __init__(self, iface='eth0'):
+        self.iface = iface
+
     def json(self):
         return json.dumps(self)
     
@@ -149,14 +153,12 @@ class Report(object):
     def throughput(self):
         """Returns avg bytes per sec over 1.5 secs and total rx_bytes"""
         diff = []
-        with open("/sys/class/net/eth0/statistics/rx_bytes", "r") as f:
-            for _ in range(3):
-                f.seek(0)
-                start = int(f.read().strip())
-                time.sleep(0.5)
-                f.seek(0)
-                end = int(f.read().strip())
-                diff.append(end-start)
+        for _ in range(3):
+            io_count = psutil.net_io_counters(pernic=True)[self.iface]
+            start = io_count.bytes_recv + io_count.bytes_sent
+            time.sleep(0.5)
+            end = io_count.bytes_recv + io_count.bytes_sent
+            diff.append(end-start)
         return sum(diff)/3*2
 
     @property
@@ -213,7 +215,9 @@ class Report(object):
 
 
 def main():
-    report = dict(Report())
+    r = Report(iface=config.iface)
+    # Forces the checks to start, they are @property
+    report = dict(r) 
     
     verbose = "-v" in sys.argv
     if verbose:

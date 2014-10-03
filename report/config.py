@@ -21,6 +21,7 @@ else:
     servernamefile = "/etc/openvpn/servername.txt"
     logfile = "/tmp/lokun/debug.log"
 
+iface = 'eth0'
 key = ''.join(open(keyfile, "r").readlines()).strip()
 servername = ''.join(open(servernamefile, "r").readlines()).strip()
 log_to_file = servername in ["vpn2", "vpn00", "testvpn"]
