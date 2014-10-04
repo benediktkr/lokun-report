@@ -151,13 +151,14 @@ class Report(object):
 
     @property
     def throughput(self):
-        """Returns avg bytes per sec over 1.5 secs and total rx_bytes"""
+        """Returns avg bytes per sec over 3 secs and total rx_bytes"""
         diff = []
         for _ in range(3):
-            io_count = psutil.net_io_counters(pernic=True)[self.iface]
-            start = io_count.bytes_recv + io_count.bytes_sent
-            time.sleep(0.5)
-            end = io_count.bytes_recv + io_count.bytes_sent
+            s0 = psutil.net_io_counters(pernic=True)[self.iface]
+            time.sleep(1.0)
+            s1 = psutil.net_io_counters(pernic=True)[self.iface]
+            start = s0.bytes_recv + s0.bytes_sent
+            end = s1.bytes_recv + s1.bytes_sent
             diff.append(end-start)
         return sum(diff)/3*2
 
