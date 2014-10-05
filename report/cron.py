@@ -146,8 +146,12 @@ class Report(object):
     
     @property
     def total_throughput(self):
-        with open("/sys/class/net/eth0/statistics/rx_bytes", "r") as f:
-            return int(f.read().strip())
+        """Returns total throughput of this month in GB"""
+        vnstat = commands.getoutput("vnstat --dumpdb")
+        vnstat = vnstat.splitlines()[13+30].split(";")
+        mib = int(vnstat[3])+int(vnstat[4])
+        mb = (mib << 20) // 1000000
+        return mb // 1000
 
     @property
     def throughput(self):
