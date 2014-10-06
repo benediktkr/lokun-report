@@ -164,7 +164,7 @@ class Report(object):
             start = s0.bytes_recv + s0.bytes_sent
             end = s1.bytes_recv + s1.bytes_sent
             diff.append(end-start)
-        return sum(diff)/3*2
+        return sum(diff)/3
 
     @property
     def usercount(self):
