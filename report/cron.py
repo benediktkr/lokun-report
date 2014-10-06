@@ -168,6 +168,7 @@ class Report(object):
 
     @property
     def usercount(self):
+        bad_names = ["END", "Updated", "UNDEF"]
         count = []
         for statusfile in config.openvpn_status:
             status = open(statusfile, 'r').readlines()
@@ -175,7 +176,7 @@ class Report(object):
             for line in status:
                 if "," in line:
                     uname = line.split(",")[0]
-                    if uname.isalnum() and uname not in ["END", "Updated"]:
+                    if uname.isalnum() and uname not in bad_names:
                         users += 1
             count.append(users)
         return sum(count)
