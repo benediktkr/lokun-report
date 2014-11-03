@@ -201,7 +201,7 @@ class Report(object):
         for _ in range(3):
             p.append(psutil.cpu_percent())
             time.sleep(0.5)
-        return sum(p)/3
+        return sum(p)  # /3
 
     @property
     def load(self):
