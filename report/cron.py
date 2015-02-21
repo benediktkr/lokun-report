@@ -10,6 +10,11 @@ import json
 from datetime import timedelta
 
 import requests
+try:
+    requests.packages.urllib3.disable_warnings()
+except AttributeError:
+    pass
+
 import psutil
 
 import config
