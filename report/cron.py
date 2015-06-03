@@ -44,6 +44,15 @@ class Selfcheck(object):
             common.debug(m, error=True)
         return cls(result, msg)
 
+class UserConnectCheck(Selfcheck):
+    @classmethod
+    def check(cls):
+        clientconnect = __import__("client-connect")
+        if clientconnect.auth("crontest"):
+            return cls(True)
+        else:
+            return cls(False, "User auth failed")
+
 class GQFSCheck(Selfcheck):
     @classmethod
     def check(cls):
