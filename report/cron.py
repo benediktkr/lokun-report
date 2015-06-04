@@ -8,6 +8,7 @@ import os
 import re
 import json
 from datetime import timedelta
+from stat import ST_MODE
 
 import requests
 try:
@@ -44,6 +45,16 @@ class Selfcheck(object):
             common.debug(m, error=True)
         return cls(result, msg)
 
+class ReportScriptsPermissioncheck(Selfcheck):
+    @classmethod
+    def check(cls):
+        files = ["client-connect.py", "client-disconnect.py", "cron.py"]
+        permissions = [oct(os.stat(os.path.join("/etc/openvpn", a))[ST_MODE])[-3:] for a in files]
+        if all(a=='755' for a in permissions):
+            return cls(True)
+        else:
+            return cls(False, "not all py files in /etc/openvpn are +x")            
+        
 class UserConnectCheck(Selfcheck):
     @classmethod
     def check(cls):
