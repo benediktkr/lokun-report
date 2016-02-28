@@ -14,7 +14,7 @@ if "--dev" in sys.argv:
         keyfile= "keyfile.api.txt"
         servernamefile = "servername.api.txt"
 else:
-    API = "https://api.lokun.is/"
+    API = "https://api.lokun.is"
     verifyssl = False
     openvpn_status = ["/tmp/lokun/openvpn-status.log", "/tmp/lokun/openvpn-status-tcp.log"]
     keyfile = "/etc/openvpn/keyfile.txt"
